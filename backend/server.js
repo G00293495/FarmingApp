@@ -41,7 +41,7 @@ app.get("/activities", async (req, res) => {
   res.status(200).json(activities);
 });
 
-// Define a schema for the inventory items
+
 const inventorySchema = new mongoose.Schema({
   name: String,
   quantity: Number,
@@ -50,7 +50,7 @@ const inventorySchema = new mongoose.Schema({
   timestamp: { type: Date, default: Date.now }
 });
 
-// Create a model from the schema
+// model from the schema
 const InventoryItem = mongoose.model("InventoryItem", inventorySchema);
 
 // Configure multer for file uploads
