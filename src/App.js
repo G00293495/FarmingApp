@@ -21,7 +21,7 @@ const FieldPage = ({ fieldName, imageUrl }) => (
   </div>
 );
 
-// Memoize the MapWithNavigation component to prevent unnecessary re-renders
+// Memoize the MapWithNavigation component - prevent unnecessary re-renders
 const MapWithNavigation = memo(() => {
   const navigate = useNavigate();
   return <MapComponent navigate={navigate} />;
