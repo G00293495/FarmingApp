@@ -12,6 +12,7 @@ export const ThemeProvider = ({ children }) => {
     setTheme(newTheme);
     localStorage.setItem('theme', newTheme); 
   };
+  
 
   useEffect(() => {
     document.body.className = theme;
