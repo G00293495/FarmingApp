@@ -20,7 +20,7 @@ const CatalogPage = () => {
     setHasSearched(true);
 
     try {
-      // Using a public CORS proxy - Note: For production, implement your own backend proxy
+      // Using public CORS proxy 
       const corsProxy = 'https://corsproxy.io/?';
       const apiUrl = `https://api.duckduckgo.com/?q=${encodeURIComponent(searchQuery + ' farm products')}&format=json&pretty=1`;
       
@@ -33,7 +33,7 @@ const CatalogPage = () => {
             title: item.Text.split(' - ')[0] || item.Text,
             snippet: item.Text,
             link: item.FirstURL,
-            // Extract image if available
+            
             image: item.Icon?.URL && item.Icon.URL !== '' ? 
                   `https://duckduckgo.com${item.Icon.URL}` : null
           }));
