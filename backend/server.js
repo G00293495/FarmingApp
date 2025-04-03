@@ -98,13 +98,13 @@ app.put("/inventory/:id", upload.single('image'), async (req, res) => {
   }
 });
 
-// Endpoint to get all inventory items
+// Endpoint to get inventory items
 app.get("/inventory", async (req, res) => {
-  const items = await InventoryItem.find().sort({ timestamp: -1 });
+  const items = await InventoryItem.find().sort({ timestamp: -1 }); //timestamp -1 for descending order
   res.status(200).json(items);
 });
 
-// Endpoint to delete an inventory item
+// Endpoint to delete inventory item
 app.delete("/inventory/:id", async (req, res) => {
   const { id } = req.params;
   try {
