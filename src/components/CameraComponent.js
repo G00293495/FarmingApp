@@ -5,7 +5,7 @@ const CameraComponent = () => {
   const webcamRef = useRef(null);
   const [capturedImage, setCapturedImage] = useState(null);
 
-  // Function to capture image from the webcam
+  // capture image from the webcam
   const captureImage = () => {
     const imageSrc = webcamRef.current.getScreenshot();
     setCapturedImage(imageSrc);
