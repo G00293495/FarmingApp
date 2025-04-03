@@ -3,7 +3,7 @@ import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 import axios from "axios";
 import "./CostIncomePage.css";
 
-const API_URL = "http://localhost:5000/cost-income"; // Change this if needed
+const API_URL = "http://localhost:5000/cost-income"; 
 
 const CostIncomePage = () => {
   const [transactions, setTransactions] = useState([]);
