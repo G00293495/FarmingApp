@@ -116,7 +116,7 @@ app.delete("/inventory/:id", async (req, res) => {
 });
 
 
-// Define a schema for cost and income transactions
+// schema for cost and income transactions
 const costIncomeSchema = new mongoose.Schema({
   type: { type: String, enum: ["cost", "income"], required: true }, // "cost" or "income"
   amount: { type: Number, required: true },
