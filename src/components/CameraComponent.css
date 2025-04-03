@@ -1,0 +1,59 @@
+.section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #f0f2f5;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 1s ease-in-out;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .section h2 {
+    font-size: 2.5em;
+    color: #4caf50;
+    margin-bottom: 20px;
+  }
+  
+  .webcam {
+    width: 100%;
+    max-width: 600px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .captured-image {
+    width: 100%;
+    max-width: 600px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .capture-btn, .reset-btn {
+    padding: 10px 20px;
+    font-size: 1.2em;
+    color: white;
+    background-color: #4caf50;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    margin: 5px;
+  }
+  
+  .capture-btn:hover, .reset-btn:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
