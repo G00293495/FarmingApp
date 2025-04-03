@@ -53,7 +53,7 @@ const inventorySchema = new mongoose.Schema({
 // model from the schema
 const InventoryItem = mongoose.model("InventoryItem", inventorySchema);
 
-// Configure multer for file uploads
+// multer for file uploads
 const fs = require("fs");
 
 const storage = multer.diskStorage({
