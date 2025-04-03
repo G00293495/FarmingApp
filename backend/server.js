@@ -4,7 +4,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const multer = require("multer");
 const path = require("path");
-require("dotenv").config(); // Load environment variables from .env file
+require("dotenv").config(); 
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -20,7 +20,7 @@ mongoose.connect(process.env.MONGODB_URI, {
   .then(() => console.log("MongoDB connected"))
   .catch(err => console.log(err));
 
-// Define a schema for the activities
+
 const activitySchema = new mongoose.Schema({
   activity: String,
   timestamp: { type: Date, default: Date.now }
