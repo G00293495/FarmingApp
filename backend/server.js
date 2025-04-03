@@ -83,7 +83,7 @@ app.post("/inventory", upload.single('image'), async (req, res) => {
   res.status(201).json(newItem);
 });
 
-// Endpoint to update an inventory item
+// update inventory item
 app.put("/inventory/:id", upload.single('image'), async (req, res) => {
   const { name, quantity, description } = req.body;
   const updateData = { name, quantity, description };
