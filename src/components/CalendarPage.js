@@ -11,7 +11,7 @@ const CalendarPage = () => {
     color: '#4CAF50'
   });
 
-  // Define farm events with date ranges
+  // Define farm events and date ranges
   const farmEvents = [
     {
       id: 1,
