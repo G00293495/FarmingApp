@@ -37,7 +37,7 @@ const ForecastPage = ({ forecast }) => {
             </ResponsiveContainer>
           </div>
 
-          {/* Weather Timeline Bar (Now Separate & Full Width) */}
+          {/* Weather Timeline Bar */}
           <div className="forecast-timeline">
             {forecast.map((day, index) => (
               <div key={index} className="timeline-item">
