@@ -12,7 +12,7 @@ const ForecastPage = ({ forecast }) => {
     <div className="forecast-container">
       <h2>5-Day Forecast</h2>
       <div className="forecast-content">
-        {/* Weather List on the Left */}
+        {/* Weather List */}
         <div className="forecast-list">
           {forecast.map((day, index) => (
             <div key={index} className="forecast-item">
