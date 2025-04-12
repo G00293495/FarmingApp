@@ -88,19 +88,7 @@ const fieldSixCoords = [
 
 const MapComponent = ({ navigate }) => {
   const handlePolygonClick = (fieldName) => {
-    if (fieldName === "Field 1") {
-      navigate("/field1");
-    } else if (fieldName === "Field 2") {
-      navigate("/field2");
-    } else if (fieldName === "Field 3") {
-      navigate("/field3");
-    } else if (fieldName === "Field 4") {
-      navigate("/field4");
-    } else if (fieldName === "Field 5") {
-      navigate("/field5");
-    } else if (fieldName === "Field 6") {
-      navigate("/field6");
-    }
+    navigate(`/field${fieldName.split(" ")[1]}`);
   };
 
   return (
