@@ -12,7 +12,6 @@ import CameraComponent from "./components/CameraComponent";
 import CatalogPage from "./components/CatalogPage"; 
 import CalendarPage from './components/CalendarPage';
 import "./App.css";
-import config from './config';
 
 
 const FieldPage = ({ fieldName, imageUrl }) => (
@@ -39,8 +38,8 @@ const AppContent = () => {
 
   const fetchActivities = async () => {
     try {
-      const response = await axios.get(`${config.apiUrl}/activities`, { 
-        timeout: 5000
+      const response = await axios.get("http://localhost:5000/activities", { 
+        timeout: 5000 // 5 second timeout
       });
       setActivities(response.data);
     } catch (error) {
@@ -57,7 +56,7 @@ const AppContent = () => {
       console.log("Fetching weather with API key:", process.env.REACT_APP_WEATHER_API_KEY);
       const response = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?q=Dublin,IE&units=metric&appid=${process.env.REACT_APP_WEATHER_API_KEY}`,
-        { timeout: 5000 }
+        { timeout: 5000 } // 5 second timeout
       );
       setWeather({
         temp: response.data.main.temp,
@@ -78,7 +77,7 @@ const AppContent = () => {
     try {
       const response = await axios.get(
         `https://api.openweathermap.org/data/2.5/forecast?q=Dublin,IE&units=metric&appid=${process.env.REACT_APP_WEATHER_API_KEY}`,
-        { timeout: 5000 }
+        { timeout: 5000 } // 5 second timeout
       );
       const dailyForecast = response.data.list.filter((reading) => reading.dt_txt.includes("12:00:00"));
       setForecast(dailyForecast);
@@ -101,10 +100,10 @@ const AppContent = () => {
     e.preventDefault(); 
     if (activityInput.trim()) {
       try {
-        const response = await axios.post(`${config.apiUrl}/activities`, {
+        const response = await axios.post("http://localhost:5000/activities", {
           activity: activityInput,
         }, { 
-          timeout: 5000
+          timeout: 5000 // 5 second timeout
         });
         setActivities([...activities, response.data]);
         setActivityInput("");

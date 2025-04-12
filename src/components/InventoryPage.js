@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import config from '../config';
 import './InventoryPage.css';
-
-const API_URL = `${config.apiUrl}/inventory`;
 
 const InventoryPage = () => {
   const [inventoryItems, setInventoryItems] = useState([]);
@@ -18,7 +15,7 @@ const InventoryPage = () => {
 
   const fetchInventoryItems = async () => {
     try {
-      const response = await axios.get(API_URL);
+      const response = await axios.get("http://localhost:5000/inventory");
       setInventoryItems(response.data);
     } catch (error) {
       console.error("Error fetching inventory items", error);
@@ -52,7 +49,7 @@ const InventoryPage = () => {
     formData.append('image', newItem.image);
 
     try {
-      const response = await axios.post(API_URL, formData, {
+      const response = await axios.post("http://localhost:5000/inventory", formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -81,7 +78,7 @@ const InventoryPage = () => {
     }
 
     try {
-      const response = await axios.put(`${API_URL}/${editingItem}`, formData, {
+      const response = await axios.put(`http://localhost:5000/inventory/${editingItem}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -96,7 +93,7 @@ const InventoryPage = () => {
 
   const handleDeleteItem = async (id) => {
     try {
-      await axios.delete(`${API_URL}/${id}`);
+      await axios.delete(`http://localhost:5000/inventory/${id}`);
       setInventoryItems(inventoryItems.filter(item => item._id !== id));
     } catch (error) {
       console.error("Error deleting inventory item", error);
@@ -153,13 +150,8 @@ const InventoryPage = () => {
                   <p>Quantity: {item.quantity}</p>
                 </div>
                 {item.imageUrl && (
-                  <img 
-                    src={`${config.apiUrl}${item.imageUrl}`} 
-                    alt={item.name} 
-                    className="inventory-image" 
-                    onError={(e) => e.target.style.display = 'none'} 
-                  />
-                )}
+  <img src={`http://localhost:5000${item.imageUrl}`} alt={item.name} className="inventory-image"onError={(e) => e.target.style.display = 'none'} // Hide broken images
+/>)}
                 <div>
                   <button onClick={() => handleEditItem(item)} className="edit-inventory-btn">Edit</button>
                   <button onClick={() => handleDeleteItem(item._id)} className="delete-inventory-btn">Delete</button>
