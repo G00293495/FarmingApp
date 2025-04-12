@@ -8,24 +8,28 @@ const API_URL = "http://localhost:5000/cost-income";
 const CostIncomePage = () => {
   const [transactions, setTransactions] = useState([]);
   const [formData, setFormData] = useState({
-    date: "",
     description: "",
     amount: "",
-    category: "",
     type: "income",
   });
 
-  // Fetch transactions from backend
   useEffect(() => {
-    axios.get(API_URL).then((response) => setTransactions(response.data)).catch((error) => console.error("Error fetching transactions:", error));
+    fetchTransactions();
   }, []);
 
-  // Handle Input Changes
+  const fetchTransactions = async () => {
+    try {
+      const response = await axios.get(API_URL);
+      setTransactions(response.data);
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+    }
+  };
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Add Transaction
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.amount || !formData.type) {
@@ -39,13 +43,12 @@ const CostIncomePage = () => {
         description: formData.description,
       });
       setTransactions([response.data, ...transactions]);
-      setFormData({ date: "", description: "", amount: "", category: "", type: "income" });
+      setFormData({ description: "", amount: "", type: "income" });
     } catch (error) {
       console.error("Error adding transaction:", error);
     }
   };
 
-  // Delete Transaction
   const handleDelete = async (id) => {
     try {
       await axios.delete(`${API_URL}/${id}`);
@@ -55,12 +58,10 @@ const CostIncomePage = () => {
     }
   };
 
-  // Calculate Summary
   const totalIncome = transactions.filter((t) => t.type === "income").reduce((sum, t) => sum + t.amount, 0);
   const totalExpenses = transactions.filter((t) => t.type === "cost").reduce((sum, t) => sum + t.amount, 0);
   const balance = totalIncome - totalExpenses;
 
-  // Group expenses for Pie Chart
   const expenseCategories = transactions.filter((t) => t.type === "cost").reduce((acc, t) => {
     acc[t.description] = (acc[t.description] || 0) + t.amount;
     return acc;
@@ -73,14 +74,12 @@ const CostIncomePage = () => {
     <div className="cost-income-container">
       <h2>Farm Cost and Income</h2>
 
-      {/* Balance Summary */}
       <div className="summary-box">
         <p><strong>Total Income:</strong> €{totalIncome.toFixed(2)}</p>
         <p><strong>Total Expenses:</strong> €{totalExpenses.toFixed(2)}</p>
         <p><strong>Balance:</strong> €{balance.toFixed(2)}</p>
       </div>
 
-      {/* Transaction Form */}
       <form className="transaction-form" onSubmit={handleSubmit}>
         <input type="text" name="description" placeholder="Description" value={formData.description} onChange={handleChange} required />
         <input type="number" name="amount" placeholder="Amount (€)" value={formData.amount} onChange={handleChange} required />
@@ -91,7 +90,6 @@ const CostIncomePage = () => {
         <button type="submit">Add Transaction</button>
       </form>
 
-      {/* Transaction Table */}
       <table className="transaction-table">
         <thead>
           <tr>
@@ -115,7 +113,6 @@ const CostIncomePage = () => {
         </tbody>
       </table>
 
-      {/* Pie Chart for Expenses */}
       {pieData.length > 0 && (
         <div className="chart-container">
           <h3>Expense Breakdown</h3>
