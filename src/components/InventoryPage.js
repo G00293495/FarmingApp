@@ -150,8 +150,13 @@ const InventoryPage = () => {
                   <p>Quantity: {item.quantity}</p>
                 </div>
                 {item.imageUrl && (
-  <img src={`http://localhost:5000${item.imageUrl}`} alt={item.name} className="inventory-image"onError={(e) => e.target.style.display = 'none'} // Hide broken images
-/>)}
+                  <img 
+                    src={`http://localhost:5000${item.imageUrl}`} 
+                    alt={item.name} 
+                    className="inventory-image" 
+                    onError={(e) => e.target.style.display = 'none'} 
+                  />
+                )}
                 <div>
                   <button onClick={() => handleEditItem(item)} className="edit-inventory-btn">Edit</button>
                   <button onClick={() => handleDeleteItem(item._id)} className="delete-inventory-btn">Delete</button>
