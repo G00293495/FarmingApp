@@ -386,3 +386,13 @@ nav button:hover {
     transform: translateY(0);
   }
 }
+
+.loading-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 1.5rem;
+  color: #3498db;
+  background-color: #f9f9f9;
+}

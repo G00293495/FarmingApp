@@ -30,7 +30,7 @@ const MapWithNavigation = memo(() => {
 
 const AppContent = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, loading } = useAuth();
   const [activities, setActivities] = useState([]);
   const [activityInput, setActivityInput] = useState("");
   const [weather, setWeather] = useState({ temp: 0, condition: "Loading..." });
@@ -123,76 +123,78 @@ const AppContent = () => {
     fetchForecast();
   }, []);
 
-  if (!isAuthenticated) {
-    return <Login />;
-  }
-
   return (
     <Router>
-      <div className={`app-container ${theme}`}>
-        <header>
-          <h1>FarmPulse</h1>
-          <p>The Ultimate App For Farmers around Ireland</p>
-          <nav className="nav-bar">
-            <button onClick={() => window.location.href = "/"} className="nav-button">Home</button>
-            <button onClick={() => window.location.href = "/forecast"} className="nav-button">5-Day Forecast</button>
-            <button onClick={() => window.location.href = "/inventory"} className="nav-button">Inventory</button>
-            <button onClick={() => window.location.href = "/camera"} className="nav-button">Camera</button>
-            <button onClick={() => window.location.href = "/cost-income"} className="nav-button">Cost & Income</button>
-            <button onClick={() => window.location.href = "/catalog"} className="nav-button">Catalog</button>
-            <button onClick={() => window.location.href = "/calendar"} className="nav-button">Calendar</button>
-            <button onClick={toggleTheme} className="nav-button">Toggle Theme</button>
-            <button onClick={logout} className="nav-button">Logout</button>
-          </nav>
-        </header>
-        <main className="main-content">
-          <Routes>
-            <Route path="/" element={
-              <>
-                <section className="map-section">
-                  <MapWithNavigation />
-                </section>
-                <div className={`right-side ${theme}`}>
-                  <section className="section weather-section">
-                    <h2>Current Weather</h2>
-                    <p>Temperature: {weather.temp}°C</p>
-                    <p>Condition: {weather.condition}</p>
-                    <button onClick={fetchWeather} className="weather-btn">Refresh Weather</button>
+      {loading ? (
+        <div className="loading-screen">Loading...</div>
+      ) : !isAuthenticated ? (
+        <Login />
+      ) : (
+        <div className={`app-container ${theme}`}>
+          <header>
+            <h1>FarmPulse</h1>
+            <p>The Ultimate App For Farmers around Ireland</p>
+            <nav className="nav-bar">
+              <button onClick={() => window.location.href = "/"} className="nav-button">Home</button>
+              <button onClick={() => window.location.href = "/forecast"} className="nav-button">5-Day Forecast</button>
+              <button onClick={() => window.location.href = "/inventory"} className="nav-button">Inventory</button>
+              <button onClick={() => window.location.href = "/camera"} className="nav-button">Camera</button>
+              <button onClick={() => window.location.href = "/cost-income"} className="nav-button">Cost & Income</button>
+              <button onClick={() => window.location.href = "/catalog"} className="nav-button">Catalog</button>
+              <button onClick={() => window.location.href = "/calendar"} className="nav-button">Calendar</button>
+              <button onClick={toggleTheme} className="nav-button">Toggle Theme</button>
+              <button onClick={logout} className="nav-button">Logout</button>
+            </nav>
+          </header>
+          <main className="main-content">
+            <Routes>
+              <Route path="/" element={
+                <>
+                  <section className="map-section">
+                    <MapWithNavigation />
                   </section>
-                  <section className="section activity-section">
-                    <h2>Activity Feed</h2>
-                    <form onSubmit={handleAddActivity}>
-                      <input
-                        type="text"
-                        placeholder="Enter activity..."
-                        value={activityInput}
-                        onChange={handleActivityInputChange}
-                        className="activity-input"
-                      />
-                      <button type="submit" className="add-activity-btn">Add Activity</button>
-                    </form>
-                    <ul className="activity-list">
-                      {activities.map((activity, index) => (
-                        <li key={index}>
-                          {activity.activity} <small>({new Date(activity.timestamp).toLocaleString()})</small>
-                        </li>
-                      ))}
-                    </ul>
-                  </section>
-                </div>
-              </>
-            } />
-            <Route path="/forecast" element={<ForecastPage forecast={forecast} />} />
-            <Route path="/field1" element={<FieldPage fieldName="Field 1" imageUrl="/field1.jpg" />} />
-            <Route path="/field2" element={<FieldPage fieldName="Field 2" imageUrl="/field2.png" />} />
-            <Route path="/inventory" element={<InventoryPage />} />
-            <Route path="/camera" element={<CameraComponent />} />
-            <Route path="/cost-income" element={<CostIncomePage />} />
-            <Route path="/catalog" element={<CatalogPage />} />
-            <Route path="/calendar" element={<CalendarPage />} />
-          </Routes>
-        </main>
-      </div>
+                  <div className={`right-side ${theme}`}>
+                    <section className="section weather-section">
+                      <h2>Current Weather</h2>
+                      <p>Temperature: {weather.temp}°C</p>
+                      <p>Condition: {weather.condition}</p>
+                      <button onClick={fetchWeather} className="weather-btn">Refresh Weather</button>
+                    </section>
+                    <section className="section activity-section">
+                      <h2>Activity Feed</h2>
+                      <form onSubmit={handleAddActivity}>
+                        <input
+                          type="text"
+                          placeholder="Enter activity..."
+                          value={activityInput}
+                          onChange={handleActivityInputChange}
+                          className="activity-input"
+                        />
+                        <button type="submit" className="add-activity-btn">Add Activity</button>
+                      </form>
+                      <ul className="activity-list">
+                        {activities.map((activity, index) => (
+                          <li key={index}>
+                            {activity.activity} <small>({new Date(activity.timestamp).toLocaleString()})</small>
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
+                  </div>
+                </>
+              } />
+              <Route path="/forecast" element={<ForecastPage forecast={forecast} />} />
+              <Route path="/field1" element={<FieldPage fieldName="Field 1" imageUrl="/field1.jpg" />} />
+              <Route path="/field2" element={<FieldPage fieldName="Field 2" imageUrl="/field2.png" />} />
+              <Route path="/inventory" element={<InventoryPage />} />
+              <Route path="/camera" element={<CameraComponent />} />
+              <Route path="/cost-income" element={<CostIncomePage />} />
+              <Route path="/catalog" element={<CatalogPage />} />
+              <Route path="/calendar" element={<CalendarPage />} />
+            </Routes>
+          </main>
+        </div>
+      )}
     </Router>
   );
 };
