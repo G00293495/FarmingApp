@@ -12,7 +12,6 @@ const ForecastPage = ({ forecast }) => {
     <div className="forecast-container">
       <h2>5-Day Forecast</h2>
       <div className="forecast-content">
-        {/* Weather List */}
         <div className="forecast-list">
           {forecast.map((day, index) => (
             <div key={index} className="forecast-item">
@@ -23,7 +22,6 @@ const ForecastPage = ({ forecast }) => {
           ))}
         </div>
 
-        {/* Graph on the Right */}
         <div className="graph-wrapper">
           <div className="graph-container">
             <ResponsiveContainer width="100%" height={500}>
@@ -37,7 +35,6 @@ const ForecastPage = ({ forecast }) => {
             </ResponsiveContainer>
           </div>
 
-          {/* Weather Timeline Bar */}
           <div className="forecast-timeline">
             {forecast.map((day, index) => (
               <div key={index} className="timeline-item">
