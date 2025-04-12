@@ -1,19 +1,29 @@
 import React, { useState } from 'react';
 import { useAuth } from './AuthContext';
-import './Login.css'; 
+import './Login.css';
 
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const { login } = useAuth();
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+    name: ''
+  });
+  const [isRegister, setIsRegister] = useState(false);
+  const { login, register, error, loading } = useAuth();
 
-  const handleSubmit = (e) => {
+  const { username, password, name } = formData;
+
+  const handleChange = e => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async e => {
     e.preventDefault();
     
-    if (username === 'user' && password === 'password') {
-      login();
+    if (isRegister) {
+      await register(formData);
     } else {
-      alert('Invalid credentials');
+      await login({ username, password });
     }
   };
 
@@ -27,21 +37,59 @@ const Login = () => {
             <label>Username:</label>
             <input
               type="text"
+              name="username"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={handleChange}
               className="form-control"
+              required
             />
           </div>
+          
+          {isRegister && (
+            <div className="form-group">
+              <label>Name:</label>
+              <input
+                type="text"
+                name="name"
+                value={name}
+                onChange={handleChange}
+                className="form-control"
+              />
+            </div>
+          )}
+          
           <div className="form-group">
             <label>Password:</label>
             <input
               type="password"
+              name="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handleChange}
               className="form-control"
+              required
             />
           </div>
-          <button type="submit" className="login-button">Login</button>
+          
+          {error && <div className="error-message">{error}</div>}
+          
+          <button 
+            type="submit" 
+            className="login-button"
+            disabled={loading}
+          >
+            {loading ? 'Processing...' : (isRegister ? 'Register' : 'Login')}
+          </button>
+          
+          <p className="toggle-form">
+            {isRegister ? 'Already have an account?' : "Don't have an account?"} 
+            <button 
+              type="button" 
+              onClick={() => setIsRegister(!isRegister)}
+              className="toggle-button"
+            >
+              {isRegister ? 'Login' : 'Register'}
+            </button>
+          </p>
         </form>
       </div>
     </div>
