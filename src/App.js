@@ -13,6 +13,7 @@ import CatalogPage from "./components/CatalogPage";
 import CalendarPage from './components/CalendarPage';
 import "./App.css";
 
+
 const FieldPage = ({ fieldName, imageUrl }) => (
   <div className="section">
     <h2>{fieldName}</h2>
