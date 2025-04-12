@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 import axios from "axios";
+import config from '../config';
 import "./CostIncomePage.css";
 
-const API_URL = "http://localhost:5000/cost-income"; 
+const API_URL = `${config.apiUrl}/cost-income`; 
 
 const CostIncomePage = () => {
   const [transactions, setTransactions] = useState([]);

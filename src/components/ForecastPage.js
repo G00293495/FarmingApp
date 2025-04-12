@@ -1,6 +1,7 @@
 import React from "react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from "recharts";
 import "./ForecastPage.css";
+import config from '../config';
 
 const ForecastPage = ({ forecast }) => {
   const formattedData = forecast.map((day) => ({
