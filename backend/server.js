@@ -161,6 +161,29 @@ app.delete("/cost-income/:id", async (req, res) => {
   }
 });
 
+const userSchema = new mongoose.Schema({
+  username: { 
+    type: String, 
+    required: true, 
+    unique: true 
+  },
+  password: { 
+    type: String, 
+    required: true 
+  },
+  name: String,
+  role: { 
+    type: String, 
+    default: 'user' 
+  },
+  createdAt: { 
+    type: Date, 
+    default: Date.now 
+  }
+});
+
+const User = mongoose.model("User", userSchema);
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
