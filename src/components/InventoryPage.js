@@ -166,36 +166,62 @@ const InventoryPage = () => {
       </button>
       {showForm && (
         <form className="inventory-form" onSubmit={handleAddItem}>
-          <input
-            type="text"
-            name="name"
-            placeholder="Item Name"
-            value={newItem.name}
-            onChange={handleInputChange}
-            required
-          />
-          <input
-            type="number"
-            name="quantity"
-            placeholder="Quantity"
-            value={newItem.quantity}
-            onChange={handleInputChange}
-            required
-          />
-          <input
-            type="text"
-            name="description"
-            placeholder="Description"
-            value={newItem.description}
-            onChange={handleInputChange}
-            required
-          />
-          <input
-            type="file"
-            name="image"
-            onChange={handleImageChange}
-            required
-          />
+          <div className="form-row">
+            <label htmlFor="name">Item Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={newItem.name}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          
+          <div className="form-row">
+            <label htmlFor="quantity">Quantity</label>
+            <input
+              type="number"
+              id="quantity"
+              name="quantity"
+              value={newItem.quantity}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          
+          <div className="form-row">
+            <label htmlFor="description">Description</label>
+            <input
+              type="text"
+              id="description"
+              name="description"
+              value={newItem.description}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          
+          <div className="file-input-wrapper">
+            <label htmlFor="image">Item Image</label>
+            <label className="custom-file-input" htmlFor="image">
+              {newItem.image ? 'Change Image' : 'Choose Image'}
+            </label>
+            <input
+              type="file"
+              id="image"
+              name="image"
+              onChange={handleImageChange}
+              accept="image/*"
+              required
+            />
+            {newItem.image && (
+              <div className="file-name-display">
+                Selected: {newItem.image.name}
+              </div>
+            )}
+          </div>
+          
           <button type="submit" className="submit-inventory-btn">Add Item</button>
         </form>
       )}
