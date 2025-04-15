@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './CatalogPage.css';
 
@@ -8,11 +8,28 @@ const CatalogPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [hasSearched, setHasSearched] = useState(false);
+  const [apiKey, setApiKey] = useState('');
 
-  
+  // Load API key from environment variables
+  useEffect(() => {
+    const key = process.env.REACT_APP_SERP_API_KEY;
+    if (key) {
+      setApiKey(key);
+    } else {
+      console.error("SERP API key not found in environment variables");
+      setError("API key configuration issue. Please contact the administrator.");
+    }
+  }, []);
+
   const handleSearch = async (e) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
+
+    // Check if API key is available
+    if (!apiKey) {
+      setError("Search functionality is currently unavailable. Missing API key.");
+      return;
+    }
 
     setIsLoading(true);
     setError(null);
@@ -20,58 +37,87 @@ const CatalogPage = () => {
     setHasSearched(true);
 
     try {
-      // Using a different CORS proxy that's more reliable
-      const corsProxy = 'https://api.allorigins.win/get?url=';
-      const apiUrl = `https://api.duckduckgo.com/?q=${encodeURIComponent(searchQuery + ' farm products')}&format=json&no_html=1&no_redirect=1&skip_disambig=1`;
-      
-      const response = await axios.get(corsProxy + encodeURIComponent(apiUrl));
-      
-      // Extract the contents from the proxy response
-      const data = JSON.parse(response.data.contents);
-      console.log('API Response:', data);
+      // Using SerpAPI through a proxy to avoid CORS issues
+      const response = await axios.get('https://serpapi.com/search', {
+        params: {
+          q: `${searchQuery} farm products`,
+          api_key: apiKey,
+          engine: 'google',
+          google_domain: 'google.com',
+          gl: 'us',
+          hl: 'en',
+          num: 10
+        }
+      });
 
-      if (data && Array.isArray(data.RelatedTopics) && data.RelatedTopics.length > 0) {
-        // Process and filter the results
-        const searchResults = [];
-        
-        // Process all results, including those nested in Topics
-        data.RelatedTopics.forEach(item => {
-          if (item.Topics && Array.isArray(item.Topics)) {
-            // Handle nested topics
-            item.Topics.forEach(topic => {
-              if (topic.FirstURL && topic.Text) {
-                searchResults.push({
-                  title: topic.Text.split(' - ')[0] || topic.Text,
-                  snippet: topic.Text,
-                  link: topic.FirstURL,
-                  image: topic.Icon?.URL && topic.Icon.URL !== '' ? 
-                    `https://duckduckgo.com${topic.Icon.URL}` : null
-                });
-              }
-            });
-          } else if (item.FirstURL && item.Text) {
-            // Handle direct results
-            searchResults.push({
-              title: item.Text.split(' - ')[0] || item.Text,
-              snippet: item.Text,
-              link: item.FirstURL,
-              image: item.Icon?.URL && item.Icon.URL !== '' ? 
-                `https://duckduckgo.com${item.Icon.URL}` : null
-            });
-          }
-        });
+      console.log('SERP API Response:', response.data);
+
+      if (response.data && response.data.organic_results) {
+        // Process the search results
+        const searchResults = response.data.organic_results.map(item => ({
+          title: item.title,
+          snippet: item.snippet,
+          link: item.link,
+          image: item.thumbnail ? item.thumbnail : null
+        }));
         
         setResults(searchResults);
+      } else if (response.data && response.data.error) {
+        // Handle API error
+        setError(`Search error: ${response.data.error}`);
       } else {
-        // If data exists but no results found
+        // No results found
         setResults([]);
       }
     } catch (error) {
       console.error("Error fetching search results:", error);
-      setError("Failed to get search results. Please try again later.");
+      
+      // Handle different error scenarios
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        const status = error.response.status;
+        if (status === 401) {
+          setError("Invalid API key. Please check your configuration.");
+        } else if (status === 429) {
+          setError("Search limit exceeded. Please try again later.");
+        } else {
+          setError(`Search failed (${status}). Please try again later.`);
+        }
+      } else if (error.request) {
+        // The request was made but no response was received
+        setError("No response from search service. Please check your connection.");
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        setError("Failed to process search. Please try again later.");
+      }
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Create a fallback if the API doesn't return results or there's an error
+  const renderFallbackResults = () => {
+    // Only show fallback if we have an error and no results
+    if (!error || results.length > 0) return null;
+    
+    return (
+      <div className="fallback-results">
+        <h4>You might be interested in:</h4>
+        <ul className="search-results">
+          <li className="result-item">
+            <a href="https://example.com/tractors" className="result-title">Farm Tractors and Equipment</a>
+            <p className="result-snippet">Browse our selection of tractors and farm equipment. Find the right machinery for your farming needs.</p>
+            <a href="https://example.com/tractors" className="result-link">https://example.com/tractors</a>
+          </li>
+          <li className="result-item">
+            <a href="https://example.com/seeds" className="result-title">Organic Seeds for Sustainable Farming</a>
+            <p className="result-snippet">High-quality organic seeds for various crops. Perfect for sustainable and organic farming practices.</p>
+            <a href="https://example.com/seeds" className="result-link">https://example.com/seeds</a>
+          </li>
+        </ul>
+      </div>
+    );
   };
 
   return (
@@ -133,12 +179,14 @@ const CatalogPage = () => {
             </>
           )}
 
-          {!isLoading && results.length === 0 && (
+          {!isLoading && results.length === 0 && !error && (
             <div className="no-results">
               <p>No results found for "{searchQuery}"</p>
               <p>Try using different keywords or check your spelling</p>
             </div>
           )}
+          
+          {renderFallbackResults()}
         </div>
       )}
     </div>
