@@ -164,7 +164,7 @@
   background-color: #f0f7f0;
 }
 
-/* Responsive design */
+/* Responsive sections for calendar */
 @media (max-width: 1200px) {
   .month-selector {
     grid-template-columns: repeat(4, 1fr);
