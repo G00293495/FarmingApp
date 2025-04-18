@@ -5,7 +5,7 @@ const CameraComponent = () => {
   const webcamRef = useRef(null);
   const [capturedImage, setCapturedImage] = useState(null);
 
-  // capture image from the webcam
+  // capture image 
   const captureImage = () => {
     const imageSrc = webcamRef.current.getScreenshot();
     setCapturedImage(imageSrc);
@@ -15,7 +15,7 @@ const CameraComponent = () => {
     <div className="camera-container">
       <h2>Capture Image</h2>
 
-      {/* Webcam Stream */}
+      {/* Webcam */}
       {!capturedImage && (
         <Webcam
           audio={false}
