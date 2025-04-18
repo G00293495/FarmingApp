@@ -103,7 +103,7 @@
     color: white;
 }
 
-/* Form styling - FIXED VERSION */
+
 .inventory-form {
     width: 100%;
     max-width: 500px;
@@ -135,7 +135,7 @@
     box-sizing: border-box;
 }
 
-/* Fixed file input styling */
+/* file input styling */
 .file-input-wrapper {
     margin-bottom: 15px;
 }
