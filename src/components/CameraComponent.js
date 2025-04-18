@@ -33,14 +33,14 @@ const CameraComponent = () => {
         </div>
       )}
 
-      {/* Capture Button */}
+      {/* Capture  */}
       {!capturedImage && (
         <button onClick={captureImage} className="capture-btn">
           Capture Photo
         </button>
       )}
 
-      {/* Reset Button */}
+      {/* Reset  */}
       {capturedImage && (
         <button onClick={() => setCapturedImage(null)} className="reset-btn">
           Retake Photo
