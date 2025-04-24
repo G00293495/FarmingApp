@@ -84,10 +84,10 @@ const CatalogPage = () => {
           setError(`Search failed (${status}). Please try again later.`);
         }
       } else if (error.request) {
-        
+        // The request was made but no response was received
         setError("No response from search service. Please check your connection.");
       } else {
-        
+        // Something happened in setting up the request that triggered an Error
         setError("Failed to process search. Please try again later.");
       }
     } finally {
