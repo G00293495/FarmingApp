@@ -5,7 +5,7 @@ const CameraComponent = () => {
   const webcamRef = useRef(null);
   const [capturedImage, setCapturedImage] = useState(null);
 
-  // capture image 
+  
   const captureImage = () => {
     const imageSrc = webcamRef.current.getScreenshot();
     setCapturedImage(imageSrc);
@@ -33,14 +33,14 @@ const CameraComponent = () => {
         </div>
       )}
 
-      {/* Capture  */}
+      {   }
       {!capturedImage && (
         <button onClick={captureImage} className="capture-btn">
           Capture Photo
         </button>
       )}
 
-      {/* Reset  */}
+      {   }
       {capturedImage && (
         <button onClick={() => setCapturedImage(null)} className="reset-btn">
           Retake Photo
