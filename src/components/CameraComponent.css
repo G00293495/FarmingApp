@@ -1,59 +1,84 @@
-.section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    background-color: #f0f2f5;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 1s ease-in-out;
-    max-width: 1200px;
-    margin: 0 auto;
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.camera-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* vertical centering */
+  align-items: center;     /* horizontal centering */
+  height: 100vh;           /* full viewport height */
+  background-color: #ffffff;
+  padding: 40px 20px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.8s ease-in-out;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.camera-container h2 {
+  font-size: 2.2rem;
+  color: #2e7d32;
+  margin-bottom: 30px;
+}
+
+.webcam,
+.captured-image {
+  width: 100%;
+  max-width: 650px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.capture-btn,
+.reset-btn {
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #fff;
+  background-color: #4caf50;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin: 10px 5px;
+  transition: all 0.3s ease;
+}
+
+.capture-btn:hover,
+.reset-btn:hover {
+  background-color: #388e3c;
+  transform: scale(1.05);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
   }
-  
-  .section h2 {
-    font-size: 2.5em;
-    color: #4caf50;
-    margin-bottom: 20px;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .webcam {
-    width: 100%;
-    max-width: 600px;
-    border-radius: 8px;
-    margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .camera-container {
+    padding: 30px 15px;
+    height: auto; /* allow scrolling on smaller screens */
+    margin-top: 30px;
   }
-  
-  .captured-image {
-    width: 100%;
-    max-width: 600px;
-    border-radius: 8px;
-    margin-bottom: 20px;
+
+  .camera-container h2 {
+    font-size: 1.8rem;
   }
-  
-  .capture-btn, .reset-btn {
+
+  .capture-btn,
+  .reset-btn {
+    font-size: 1rem;
     padding: 10px 20px;
-    font-size: 1.2em;
-    color: white;
-    background-color: #4caf50;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-    margin: 5px;
   }
-  
-  .capture-btn:hover, .reset-btn:hover {
-    background-color: #45a049;
-    transform: scale(1.05);
-  }
-  
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
+}
