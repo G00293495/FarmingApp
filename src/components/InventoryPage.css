@@ -195,6 +195,16 @@
     background-color: #27ae60;
 }
 
+.cancel-edit-btn {
+    padding: 8px 16px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #95a5a6; /* a nice grey */
+    color: white;
+}
+
 
 @media (max-width: 768px) {
     .inventory-form {

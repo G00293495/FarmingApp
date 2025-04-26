@@ -1,3 +1,4 @@
+// imports
 import React, { useState, useEffect, useContext, memo } from "react";
 import axios from "axios";
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
@@ -13,7 +14,7 @@ import CatalogPage from "./components/CatalogPage";
 import CalendarPage from './components/CalendarPage';
 import "./App.css";
 
-
+// Field page component
 const FieldPage = ({ fieldName, imageUrl }) => (
   <div className="section">
     <h2>{fieldName}</h2>
@@ -22,12 +23,13 @@ const FieldPage = ({ fieldName, imageUrl }) => (
   </div>
 );
 
-// Memoize the MapWithNavigation component - prevent unnecessary re-renders
+// Memoized map component
 const MapWithNavigation = memo(() => {
   const navigate = useNavigate();
   return <MapComponent navigate={navigate} />;
 });
 
+// Main AppContent
 const AppContent = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const { isAuthenticated, logout, loading } = useAuth();
@@ -38,16 +40,10 @@ const AppContent = () => {
 
   const fetchActivities = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/activities", { 
-        timeout: 5000 // 5 second timeout
-      });
+      const response = await axios.get("http://localhost:5000/activities", { timeout: 5000 });
       setActivities(response.data);
     } catch (error) {
-      if (error.code === 'ECONNABORTED') {
-        console.error("Activities request timed out");
-      } else {
-        console.error("Error fetching activities", error);
-      }
+      console.error("Error fetching activities", error);
     }
   };
 
@@ -56,20 +52,15 @@ const AppContent = () => {
       console.log("Fetching weather with API key:", process.env.REACT_APP_WEATHER_API_KEY);
       const response = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?q=Dublin,IE&units=metric&appid=${process.env.REACT_APP_WEATHER_API_KEY}`,
-        { timeout: 5000 } // 5 second timeout
+        { timeout: 5000 }
       );
       setWeather({
         temp: response.data.main.temp,
         condition: response.data.weather[0].description,
       });
     } catch (error) {
-      if (error.code === 'ECONNABORTED') {
-        console.error("Weather request timed out");
-        setWeather({ temp: '--', condition: "Unavailable (timeout)" });
-      } else {
-        console.error("Error fetching weather", error);
-        setWeather({ temp: '--', condition: "Unavailable" });
-      }
+      console.error("Error fetching weather", error);
+      setWeather({ temp: '--', condition: "Unavailable" });
     }
   };
 
@@ -77,42 +68,31 @@ const AppContent = () => {
     try {
       const response = await axios.get(
         `https://api.openweathermap.org/data/2.5/forecast?q=Dublin,IE&units=metric&appid=${process.env.REACT_APP_WEATHER_API_KEY}`,
-        { timeout: 5000 } // 5 second timeout
+        { timeout: 5000 }
       );
       const dailyForecast = response.data.list.filter((reading) => reading.dt_txt.includes("12:00:00"));
       setForecast(dailyForecast);
     } catch (error) {
-      if (error.code === 'ECONNABORTED') {
-        console.error("Forecast request timed out");
-      } else {
-        console.error("Error fetching forecast", error);
-      }
+      console.error("Error fetching forecast", error);
       setForecast([]);
     }
   };
 
-  // Create a stable function reference for handling activity input
   const handleActivityInputChange = (e) => {
     setActivityInput(e.target.value);
   };
 
   const handleAddActivity = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     if (activityInput.trim()) {
       try {
         const response = await axios.post("http://localhost:5000/activities", {
           activity: activityInput,
-        }, { 
-          timeout: 5000 // 5 second timeout
-        });
+        }, { timeout: 5000 });
         setActivities([...activities, response.data]);
         setActivityInput("");
       } catch (error) {
-        if (error.code === 'ECONNABORTED') {
-          console.error("Add activity request timed out");
-        } else {
-          console.error("Error adding activity", error);
-        }
+        console.error("Error adding activity", error);
       }
     }
   };
@@ -158,7 +138,6 @@ const AppContent = () => {
                       <h2>Current Weather</h2>
                       <p>Temperature: {weather.temp}°C</p>
                       <p>Condition: {weather.condition}</p>
-                      <button onClick={fetchWeather} className="weather-btn">Refresh Weather</button>
                     </section>
                     <section className="section activity-section">
                       <h2>Activity Feed</h2>
@@ -199,6 +178,7 @@ const AppContent = () => {
   );
 };
 
+// Full app with providers
 const App = () => (
   <AuthProvider>
     <ThemeProvider>
