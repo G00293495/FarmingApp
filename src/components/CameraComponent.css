@@ -1,3 +1,11 @@
+.image-container {
+  display: flex; /* Use flexbox for horizontal alignment */
+  justify-content: center; /* Center images horizontally */
+  align-items: center; /* Center images vertically */
+  gap: 20px; /* Add spacing between images */
+  margin-top: 20px; /* Add some spacing from other elements */
+}
+
 body, html {
   height: 100%;
   margin: 0;
@@ -7,9 +15,9 @@ body, html {
 .camera-container {
   display: flex;
   flex-direction: column;
-  justify-content: center; /* vertical centering */
-  align-items: center;     /* horizontal centering */
-  height: 100vh;           /* full viewport height */
+  justify-content: center; 
+  align-items: center;     
+  height: 100vh;          
   background-color: #ffffff;
   padding: 40px 20px;
   border-radius: 12px;
@@ -28,9 +36,8 @@ body, html {
 .webcam,
 .captured-image {
   width: 100%;
-  max-width: 650px;
+  max-width: 300px; /* Adjust the size of the images */
   border-radius: 10px;
-  margin-bottom: 25px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 

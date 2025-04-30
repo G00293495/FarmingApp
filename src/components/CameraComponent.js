@@ -14,19 +14,19 @@ const CameraComponent = () => {
   const uploadImage = async () => {
     if (!capturedImage) return;
 
-    const blob = await fetch(capturedImage).then(res => res.blob());
+    const blob = await fetch(capturedImage).then((res) => res.blob());
     const formData = new FormData();
     formData.append("image", blob, "captured.jpg");
 
     try {
-      const res = await fetch("http://localhost:5000/upload", {
+      const res = await fetch("http://localhost:5000/camera/upload", {
         method: "POST",
         body: formData,
       });
 
       if (res.ok) {
         setCapturedImage(null);
-        fetchStoredImages(); // refresh the gallery
+        fetchStoredImages();
       }
     } catch (err) {
       console.error("Upload failed", err);
@@ -35,7 +35,7 @@ const CameraComponent = () => {
 
   const fetchStoredImages = async () => {
     try {
-      const res = await fetch("http://localhost:5000/images");
+      const res = await fetch("http://localhost:5000/camera/images");
       const data = await res.json();
       setStoredImages(data);
     } catch (err) {
@@ -51,21 +51,20 @@ const CameraComponent = () => {
     <div className="camera-container">
       <h2>Capture Image</h2>
 
-      {!capturedImage && (
-        <Webcam
-          audio={false}
-          ref={webcamRef}
-          screenshotFormat="image/jpeg"
-          className="webcam"
-        />
-      )}
+      <div className="image-container">
+        {!capturedImage && (
+          <Webcam
+            audio={false}
+            ref={webcamRef}
+            screenshotFormat="image/jpeg"
+            className="webcam"
+          />
+        )}
 
-      {capturedImage && (
-        <div>
-          <h3>Captured Image</h3>
+        {capturedImage && (
           <img src={capturedImage} alt="Captured" className="captured-image" />
-        </div>
-      )}
+        )}
+      </div>
 
       {!capturedImage ? (
         <button onClick={captureImage} className="capture-btn">
@@ -83,13 +82,13 @@ const CameraComponent = () => {
       )}
 
       <h3>Previous Captures</h3>
-      <div style={{ width: "100%" }}>
+      <div className="image-container">
         {storedImages.map((img, index) => (
-          <div key={index} style={{ marginBottom: "20px", textAlign: "center" }}>
+          <div key={index} style={{ textAlign: "center" }}>
             <img
-              src={`http://localhost:5000/${img.filename}`}
+              src={`http://localhost:5000${img.url}`}
               alt={`Capture ${index}`}
-              style={{ width: "100%", maxWidth: "500px", borderRadius: "10px" }}
+              className="captured-image"
             />
             <p style={{ marginTop: "8px", fontSize: "0.9rem", color: "#555" }}>
               {new Date(img.timestamp).toLocaleString()}

@@ -3,22 +3,21 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 
-// Register route
+
 router.post('/register', async (req, res) => {
   try {
     const { username, password, name } = req.body;
     
-    // Check if user exists
+    // does user exist?
     const existingUser = await User.findOne({ username });
     if (existingUser) {
       return res.status(400).json({ message: 'Username already exists' });
     }
     
-    // Hash password with bcrypt
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+     
+    const hashedPassword = await bcrypt.hash(password, 10);
     
-    // Create and save new user
+   
     const newUser = new User({
       username,
       password: hashedPassword,
@@ -27,7 +26,7 @@ router.post('/register', async (req, res) => {
     
     await newUser.save();
     
-    // Return success without sensitive data
+    // success!
     res.status(201).json({ 
       success: true,
       user: {
@@ -42,24 +41,24 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Login route
+
 router.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
     
-    // Find user
+    // Find the user
     const user = await User.findOne({ username });
     if (!user) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
     
-    // Check password
+    // Check the hashed password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
     
-    // Login successful
+    // success!
     res.json({ 
       success: true,
       user: {

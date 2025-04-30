@@ -1,4 +1,4 @@
-// imports
+
 import React, { useState, useEffect, useContext, memo } from "react";
 import axios from "axios";
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
@@ -14,7 +14,7 @@ import CatalogPage from "./components/CatalogPage";
 import CalendarPage from './components/CalendarPage';
 import "./App.css";
 
-// Field page component
+
 const FieldPage = ({ fieldName, imageUrl }) => (
   <div className="section">
     <h2>{fieldName}</h2>
@@ -178,7 +178,7 @@ const AppContent = () => {
   );
 };
 
-// Full app with providers
+
 const App = () => (
   <AuthProvider>
     <ThemeProvider>

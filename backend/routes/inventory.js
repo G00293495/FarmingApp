@@ -3,7 +3,7 @@ const router = express.Router();
 const InventoryItem = require('../models/Inventory');
 const upload = require('../middleware/upload');
 
-// Get all inventory items
+// Get items
 router.get('/', async (req, res) => {
   try {
     const items = await InventoryItem.find().sort({ timestamp: -1 });
@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Add a new inventory item
+// add new product
 router.post('/', upload.single('image'), async (req, res) => {
   try {
     const { name, quantity, description } = req.body;
@@ -41,7 +41,7 @@ router.put('/:id', upload.single('image'), async (req, res) => {
   }
 });
 
-// Delete an inventory item
+// Delete 
 router.delete('/:id', async (req, res) => {
   try {
     await InventoryItem.findByIdAndDelete(req.params.id);

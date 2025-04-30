@@ -10,7 +10,7 @@ const CatalogPage = () => {
   const [hasSearched, setHasSearched] = useState(false);
   const [apiKey, setApiKey] = useState('');
 
-  // Load API key from environment variables
+  
   useEffect(() => {
     const key = process.env.REACT_APP_SERP_API_KEY;
     if (key) {
@@ -84,10 +84,10 @@ const CatalogPage = () => {
           setError(`Search failed (${status}). Please try again later.`);
         }
       } else if (error.request) {
-        // The request was made but no response was received
+        
         setError("No response from search service. Please check your connection.");
       } else {
-        // Something happened in setting up the request that triggered an Error
+        
         setError("Failed to process search. Please try again later.");
       }
     } finally {
@@ -95,9 +95,9 @@ const CatalogPage = () => {
     }
   };
 
-  // Create a fallback if the API doesn't return results or there's an error
+  // Create a fallback
   const renderFallbackResults = () => {
-    // Only show fallback if we have an error and no results
+    
     if (!error || results.length > 0) return null;
     
     return (

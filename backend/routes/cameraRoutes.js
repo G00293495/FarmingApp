@@ -2,9 +2,9 @@ const express = require('express');
 const multer = require('multer');
 const mongoose = require('mongoose');
 const path = require('path');
+const fs = require('fs');
 const router = express.Router();
 
-// MongoDB schema
 const imageSchema = new mongoose.Schema({
   filename: String,
   timestamp: { type: Date, default: Date.now },
@@ -15,7 +15,11 @@ const CameraImage = mongoose.model('CameraImage', imageSchema);
 // Multer storage config
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // save to /uploads
+    const uploadPath = path.join(__dirname, '../uploads');
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
+    }
+    cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
     const uniqueName = `${Date.now()}-${file.originalname}`;
@@ -25,8 +29,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// @route   POST /camera/upload
-// @desc    Upload an image from webcam
 router.post('/upload', upload.single('image'), async (req, res) => {
   try {
     const newImage = new CameraImage({
@@ -44,8 +46,6 @@ router.post('/upload', upload.single('image'), async (req, res) => {
   }
 });
 
-// @route   GET /camera/images
-// @desc    Get all uploaded images
 router.get('/images', async (req, res) => {
   try {
     const images = await CameraImage.find().sort({ timestamp: -1 });

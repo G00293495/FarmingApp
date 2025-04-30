@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  // Register new user
+ 
   const register = async (userData) => {
     try {
       setLoading(true);
@@ -91,5 +91,5 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// Custom hook to use auth context
+
 export const useAuth = () => useContext(AuthContext);

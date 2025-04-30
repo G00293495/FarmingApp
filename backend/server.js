@@ -11,17 +11,17 @@ const activityRoutes = require('./routes/activities');
 const inventoryRoutes = require('./routes/inventory');
 const costIncomeRoutes = require('./routes/costIncome');
 const authRoutes = require('./routes/auth');
-const cameraRoutes = require('./routes/cameraRoutes'); // ✅ added
+const cameraRoutes = require('./routes/cameraRoutes'); 
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
+// Middleware 
 app.use(cors());
 app.use(bodyParser.json());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // ✅ serving images
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); 
 
-// Connect to MongoDB
+// Connect to MongoDB atlas
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -32,12 +32,12 @@ mongoose.connect(process.env.MONGODB_URI, {
 })
 .catch(err => console.log(err));
 
-// Use routes
+// uses the routes
 app.use('/activities', activityRoutes);
 app.use('/inventory', inventoryRoutes);
 app.use('/cost-income', costIncomeRoutes);
 app.use('/auth', authRoutes);
-app.use('/camera', cameraRoutes); // ✅ added
+app.use('/camera', cameraRoutes); 
 
 // Start server
 app.listen(PORT, () => {
